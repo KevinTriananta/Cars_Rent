@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Car;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CarsController extends Controller
 {
@@ -56,7 +57,15 @@ class CarsController extends Controller
             'brand' => 'required|string|max:255',
             'price_per_day' => 'required|numeric|min:0',
             'status' => 'required|in:available,rented',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $filename = time() . '.' . $image->getClientOriginalExtension();
+            $image->storeAs('cars', $filename, 'public');
+            $validated['image'] = 'cars/' . $filename;
+        }
 
         Car::create($validated);
 
@@ -75,7 +84,21 @@ class CarsController extends Controller
             'brand' => 'required|string|max:255',
             'price_per_day' => 'required|numeric|min:0',
             'status' => 'required|in:available,rented',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
+        if ($request->hasFile('image')) {
+            // Delete old image
+            if ($car->image && Storage::disk('public')->exists($car->image)) {
+                Storage::disk('public')->delete($car->image);
+            }
+
+            // Store new image
+            $image = $request->file('image');
+            $filename = time() . '.' . $image->getClientOriginalExtension();
+            $image->storeAs('cars', $filename, 'public');
+            $validated['image'] = 'cars/' . $filename;
+        }
 
         $car->update($validated);
 
@@ -84,6 +107,11 @@ class CarsController extends Controller
 
     public function destroy(Car $car)
     {
+        // Delete image if exists
+        if ($car->image && Storage::disk('public')->exists($car->image)) {
+            Storage::disk('public')->delete($car->image);
+        }
+
         $car->delete();
 
         return redirect()->route('admin.cars.index')->with('success', 'Mobil berhasil dihapus.');

@@ -43,7 +43,7 @@
                         <a href="{{ route('cars.index') }}" class="inline-flex items-center justify-center px-8 py-3 rounded-full bg-blue-600 text-white font-semibold shadow-lg hover:bg-blue-700 hover:shadow-xl transition transform hover:scale-105">Lihat Katalog</a>
                     </div>
                 </div>
-                <div class="lg:w-5/12">
+                <div class="lg:w-8/12 ">
                     <div class="relative overflow-hidden rounded-1xl">
                         <img src="LP.png" alt="Mobil rental" class="w-full h-auto object-cover"/>
                     </div>

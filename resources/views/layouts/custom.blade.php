@@ -16,8 +16,11 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20">
                 <div class="flex items-center">
-                    <a href="{{ url('/') }}" class="flex-shrink-0 flex items-center bg-gray-200 px-6 py-2 rounded font-bold tracking-widest text-gray-600 hover:bg-gray-300 transition">
-                        Cars Rent
+                    <a href="{{ url('/') }}" class="flex-shrink-0 flex items-center gap-2 hover:opacity-80 transition">
+                        <div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center">
+                            <span class="text-white font-bold text-sm">@</span>
+                        </div>
+                        <span class="text-lg font-bold text-gray-900">Cars Rent</span>
                     </a>
                     
                     @if(Auth::check())

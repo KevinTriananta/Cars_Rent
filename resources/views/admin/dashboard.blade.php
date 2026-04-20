@@ -4,12 +4,11 @@
     <div class="space-y-6">
         <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
-                <p class="text-sm uppercase tracking-[0.2em] text-blue-600">Admin Dashboard</p>
-                <h1 class="text-3xl font-semibold text-gray-900">Ringkasan Operasional</h1>
-                <p class="mt-2 text-gray-500 max-w-2xl">Pantau pendapatan, booking harian, status mobil, dan reminder penting dalam satu tampilan.</p>
+                <p class="text-3xl uppercase tracking-[0.2em] text-blue-600 font-semibold">Admin Dashboard</p>
+                <p class="mt-2 text-gray-500 max-w-2xl">Pantau pendapatan, booking harian, status mobil, dan reminder penting secara cepat.</p>
             </div>
             <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                <div class="rounded-3xl bg-gray-50 border border-gray-200 p-4 text-center shadow-sm">
+                <div class="rounded-3xl bg-gray-50 border border-gray-200 p-5 text-center shadow-sm">
                     <p class="text-xs uppercase tracking-[0.2em] text-gray-500">Total Mobil</p>
                     <p class="mt-3 text-3xl font-bold text-gray-900">{{ $cars }}</p>
                 </div>
@@ -17,11 +16,11 @@
                     <p class="text-xs uppercase tracking-[0.2em] text-gray-500">Total Booking</p>
                     <p class="mt-3 text-3xl font-bold text-gray-900">{{ $bookings }}</p>
                 </div>
-                <div class="rounded-3xl bg-gray-50 border border-gray-200 p-4 text-center shadow-sm">
+                <div class="rounded-3xl bg-gray-50 border border-gray-200 p-8 text-center shadow-sm">
                     <p class="text-xs uppercase tracking-[0.2em] text-gray-500">Pending</p>
                     <p class="mt-3 text-3xl font-bold text-yellow-600">{{ $pending }}</p>
                 </div>
-                <div class="rounded-3xl bg-gray-50 border border-gray-200 p-4 text-center shadow-sm">
+                <div class="rounded-3xl bg-gray-50 border border-gray-200 p-5 text-center shadow-sm">
                     <p class="text-xs uppercase tracking-[0.2em] text-gray-500">Mobil Disewa</p>
                     <p class="mt-3 text-3xl font-bold text-red-600">{{ $rentedCars }}</p>
                 </div>
@@ -81,7 +80,7 @@
                     <div class="flex items-center justify-between gap-4">
                         <div>
                             <h2 class="text-lg font-semibold text-gray-900">Aktivitas Terbaru</h2>
-                            <p class="mt-1 text-sm text-gray-500">Rekomendasi aksi tim operasional.</p>
+                            <p class="mt-1 text-sm text-gray-500">Ringkasan aktivitas terkini di sistem.</p>
                         </div>
                         <span class="rounded-full bg-gray-100 px-3 py-1 text-sm font-semibold text-gray-700">{{ $activityFeed->count() }} item</span>
                     </div>
@@ -106,12 +105,12 @@
                     <div class="flex items-center justify-between gap-4">
                         <div>
                             <h2 class="text-lg font-semibold text-gray-900">Status Mobil</h2>
-                            <p class="mt-1 text-sm text-gray-500">Ringkasan ketersediaan armada.</p>
+                            <p class="mt-1 text-sm text-gray-500">Ringkasan ketersediaan mobil.</p>
                         </div>
                     </div>
                     <div class="mt-6 grid gap-4 sm:grid-cols-2">
                         <div class="rounded-3xl bg-blue-50 p-5">
-                            <p class="text-sm text-blue-700">🚗 Tersedia</p>
+                            <p class="text-sm text-blue-700">🟢 Tersedia</p>
                             <p class="mt-3 text-3xl font-semibold text-blue-900">{{ $carStatuses['available'] }}</p>
                         </div>
                         <div class="rounded-3xl bg-red-50 p-5">
@@ -125,7 +124,7 @@
                     <div class="flex items-center justify-between gap-4">
                         <div>
                             <h2 class="text-lg font-semibold text-gray-900">Reminder & Alert</h2>
-                            <p class="mt-1 text-sm text-gray-500">Notifikasi yang membuat dashboard lebih pintar.</p>
+                            <p class="mt-1 text-sm text-gray-500">Notifikasi penting terkait aktivitas sistem.</p>
                         </div>
                     </div>
                     <div class="mt-6 space-y-4">

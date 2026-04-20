@@ -4,11 +4,15 @@
 <div class="max-w-4xl mx-auto space-y-6">
     <!-- Header -->
     <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-        <div class="h-64 bg-gradient-to-r from-blue-400 to-blue-600 flex items-center justify-center">
-            <svg class="w-24 h-24 text-white opacity-50" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.22.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm11 0c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
-            </svg>
-        </div>
+        @if($car->image)
+            <img src="{{ asset('storage/' . $car->image) }}" alt="{{ $car->name }}" class="w-full h-64 object-cover" />
+        @else
+            <div class="h-64 bg-gradient-to-r from-blue-400 to-blue-600 flex items-center justify-center">
+                <svg class="w-24 h-24 text-white opacity-50" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.22.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm11 0c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
+                </svg>
+            </div>
+        @endif
         
         <div class="p-6">
             <div class="flex justify-between items-start mb-4">

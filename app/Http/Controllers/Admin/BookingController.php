@@ -35,35 +35,14 @@ class BookingController extends Controller
         switch ($action) {
             case 'approve':
                 Booking::whereIn('id', $bookingIds)->where('status', '!=', 'approved')->update(['status' => 'approved']);
-                // Update car status to rented
-                $bookings = Booking::whereIn('id', $bookingIds)->with('car')->get();
-                foreach ($bookings as $booking) {
-                    if ($booking->car) {
-                        $booking->car->update(['status' => 'rented']);
-                    }
-                }
                 $message = 'Booking berhasil disetujui.';
                 break;
             case 'reject':
                 Booking::whereIn('id', $bookingIds)->where('status', '!=', 'rejected')->update(['status' => 'rejected']);
-                // Update car status back to available if it was approved
-                $bookings = Booking::whereIn('id', $bookingIds)->with('car')->get();
-                foreach ($bookings as $booking) {
-                    if ($booking->car && $booking->status === 'approved') {
-                        $booking->car->update(['status' => 'available']);
-                    }
-                }
                 $message = 'Booking berhasil ditolak.';
                 break;
             case 'pending':
                 Booking::whereIn('id', $bookingIds)->where('status', '!=', 'pending')->update(['status' => 'pending']);
-                // Update car status back to available if it was approved
-                $bookings = Booking::whereIn('id', $bookingIds)->with('car')->get();
-                foreach ($bookings as $booking) {
-                    if ($booking->car && $booking->status === 'approved') {
-                        $booking->car->update(['status' => 'available']);
-                    }
-                }
                 $message = 'Status booking diubah menjadi pending.';
                 break;
         }
@@ -76,10 +55,6 @@ class BookingController extends Controller
         if ($booking->status !== 'approved') {
             $booking->update(['status' => 'approved']);
 
-            if ($booking->car && $booking->car->status !== 'rented') {
-                $booking->car->update(['status' => 'rented']);
-            }
-
             // Send email notification
             Mail::to($booking->user->email)->send(new BookingApproved($booking));
         }
@@ -90,10 +65,6 @@ class BookingController extends Controller
     public function reject(Booking $booking)
     {
         if ($booking->status !== 'rejected') {
-            if ($booking->status === 'approved' && $booking->car) {
-                $booking->car->update(['status' => 'available']);
-            }
-
             $booking->update(['status' => 'rejected']);
 
             // Send email notification
@@ -106,10 +77,6 @@ class BookingController extends Controller
     public function pending(Booking $booking)
     {
         if ($booking->status !== 'pending') {
-            if ($booking->status === 'approved' && $booking->car) {
-                $booking->car->update(['status' => 'available']);
-            }
-
             $booking->update(['status' => 'pending']);
         }
 
