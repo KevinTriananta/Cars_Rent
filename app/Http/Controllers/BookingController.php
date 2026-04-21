@@ -27,10 +27,12 @@ class BookingController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        $cars = Car::where('status', 'available')->get();
-        return view('bookings.create', compact('cars'));
+        $cars = Car::orderBy('name')->get();
+        $selectedCarId = $request->integer('car');
+
+        return view('bookings.create', compact('cars', 'selectedCarId'));
     }
 
     /**
@@ -52,7 +54,7 @@ class BookingController extends Controller
                 $query->where('start_date', '<=', $validated['end_date'])
                       ->where('end_date', '>=', $validated['start_date']);
             })
-            ->whereNotIn('status', ['cancelled', 'rejected'])
+            ->whereIn('status', ['pending', 'approved'])
             ->exists();
 
         if ($overlappingBooking) {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Car;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class CarsController extends Controller
@@ -12,7 +13,14 @@ class CarsController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Car::query();
+        $today = Carbon::today();
+        $query = Car::query()->withExists([
+            'bookings as has_active_booking_today' => function ($bookingQuery) use ($today) {
+                $bookingQuery->whereIn('status', ['pending', 'approved'])
+                    ->whereDate('start_date', '<=', $today)
+                    ->whereDate('end_date', '>=', $today);
+            }
+        ]);
 
         // Search by name or brand
         if ($request->has('search') && !empty($request->search)) {
@@ -23,9 +31,21 @@ class CarsController extends Controller
             });
         }
 
-        // Filter by status
+        // Filter by status (berdasarkan booking aktif hari ini, bukan status global mobil)
         if ($request->has('status') && !empty($request->status)) {
-            $query->where('status', $request->status);
+            if ($request->status === 'available') {
+                $query->whereDoesntHave('bookings', function ($bookingQuery) use ($today) {
+                    $bookingQuery->whereIn('status', ['pending', 'approved'])
+                        ->whereDate('start_date', '<=', $today)
+                        ->whereDate('end_date', '>=', $today);
+                });
+            } elseif ($request->status === 'rented') {
+                $query->whereHas('bookings', function ($bookingQuery) use ($today) {
+                    $bookingQuery->whereIn('status', ['pending', 'approved'])
+                        ->whereDate('start_date', '<=', $today)
+                        ->whereDate('end_date', '>=', $today);
+                });
+            }
         }
 
         // Filter by price range
@@ -51,7 +71,14 @@ class CarsController extends Controller
      */
     public function show(Car $car)
     {
-        return view('cars.show', compact('car'));
+        $today = Carbon::today();
+        $isBookedToday = $car->bookings()
+            ->whereIn('status', ['pending', 'approved'])
+            ->whereDate('start_date', '<=', $today)
+            ->whereDate('end_date', '>=', $today)
+            ->exists();
+
+        return view('cars.show', compact('car', 'isBookedToday'));
     }
 
     /**
@@ -59,9 +86,9 @@ class CarsController extends Controller
      */
     public function calendar(Car $car)
     {
-        // Get all bookings for this car that are not cancelled/rejected
+        // Tanggal yang bentrok dianggap tidak tersedia (pending + approved).
         $bookings = $car->bookings()
-            ->whereNotIn('status', ['cancelled', 'rejected'])
+            ->whereIn('status', ['pending', 'approved'])
             ->get();
 
         return view('cars.calendar', compact('car', 'bookings'));

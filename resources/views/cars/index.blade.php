@@ -94,24 +94,23 @@
                         <p class="text-blue-600 font-bold text-lg mb-3">Rp {{ number_format($car->price_per_day, 0, ',', '.') }} / Hari</p>
                         
                         <div class="mb-4">
-                            <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold {{ $car->status === 'available' ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700' }}">
-                                {{ $car->status === 'available' ? '✓ Tersedia' : 'x Sedang Disewa' }}
+                            <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
+                                ✓ Tersedia
                             </span>
+                            @if($car->has_active_booking_today)
+                                <p class="mt-2 text-xs text-orange-600">Sedang disewa hari ini, pilih tanggal lain di kalender.</p>
+                            @else
+                                <p class="mt-2 text-xs text-gray-500">Tersedia untuk hari ini.</p>
+                            @endif
                         </div>
 
                         <div class="flex gap-2">
                             <a href="{{ route('cars.show', $car) }}" class="flex-1 text-center bg-gray-600 text-white py-2 rounded-lg text-sm font-semibold hover:bg-gray-700 transition">
                                 Lihat Detail
                             </a>
-                            @if($car->status === 'available')
-                                <a href="{{ route('bookings.create', ['car' => $car->id]) }}" class="flex-1 text-center bg-blue-600 text-white py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition">
-                                    Pesan
-                                </a>
-                            @else
-                                <button disabled class="flex-1 text-center bg-gray-300 text-gray-500 py-2 rounded-lg text-sm font-semibold cursor-not-allowed">
-                                    Tidak Tersedia
-                                </button>
-                            @endif
+                            <a href="{{ route('bookings.create', ['car' => $car->id]) }}" class="flex-1 text-center bg-blue-600 text-white py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition">
+                                Pesan
+                            </a>
                         </div>
                     </div>
                 </div>

@@ -5,7 +5,17 @@
     <!-- Header -->
     <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
         @if($car->image)
-            <img src="{{ asset('storage/' . $car->image) }}" alt="{{ $car->name }}" class="w-full h-64 object-cover" />
+            <button
+                type="button"
+                id="openImageFullscreen"
+                class="group relative block w-full focus:outline-none focus:ring-4 focus:ring-blue-200"
+                aria-label="Lihat gambar mobil fullscreen"
+            >
+                <img src="{{ asset('storage/' . $car->image) }}" alt="{{ $car->name }}" class="w-full h-64 object-cover" />
+                <span class="absolute right-3 top-3 rounded-lg bg-black/55 px-3 py-1 text-xs font-semibold text-white opacity-90 group-hover:bg-black/70">
+                    Klik untuk fullscreen
+                </span>
+            </button>
         @else
             <div class="h-64 bg-gradient-to-r from-blue-400 to-blue-600 flex items-center justify-center">
                 <svg class="w-24 h-24 text-white opacity-50" fill="currentColor" viewBox="0 0 24 24">
@@ -27,25 +37,26 @@
             </div>
             
             <div class="flex items-center gap-4 mb-6">
-                <span class="inline-block px-4 py-2 rounded-full text-sm font-semibold {{ $car->status === 'available' ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700' }}">
-                    {{ $car->status === 'available' ? '✓ Tersedia' : 'x Sedang Disewa' }}
+                <span class="inline-block px-4 py-2 rounded-full text-sm font-semibold bg-green-100 text-green-700">
+                    ✓ Tersedia
                 </span>
+                @if($isBookedToday)
+                    <span class="text-sm text-orange-600">Sedang ada penyewaan pada hari ini</span>
+                @endif
             </div>
-            
-            @if($car->status === 'available')
-                <div class="flex gap-3">
-                    <a href="{{ route('bookings.create', ['car' => $car->id]) }}" class="flex-1 text-center bg-blue-600 text-white py-3 rounded-full text-lg font-semibold hover:bg-blue-700 transition">
-                        Pesan Sekarang
-                    </a>
-                    <a href="{{ route('cars.calendar', $car) }}" class="flex-1 text-center bg-green-600 text-white py-3 rounded-full text-lg font-semibold hover:bg-green-700 transition">
-                        Lihat Kalender
-                    </a>
-                </div>
-            @else
-                <button disabled class="block w-full text-center bg-gray-300 text-gray-500 py-3 rounded-full text-lg font-semibold cursor-not-allowed">
-                    Tidak Tersedia
-                </button>
-            @endif
+
+            <p class="text-sm text-gray-600 mb-4">
+                Cek kalender untuk melihat ketersediaan mobil pada tanggal yang anda inginkan.
+            </p>
+
+            <div class="flex gap-3">
+                <a href="{{ route('bookings.create', ['car' => $car->id]) }}" class="flex-1 text-center bg-blue-600 text-white py-3 rounded-full text-lg font-semibold hover:bg-blue-700 transition">
+                    Pesan Sekarang
+                </a>
+                <a href="{{ route('cars.calendar', $car) }}" class="flex-1 text-center bg-green-600 text-white py-3 rounded-full text-lg font-semibold hover:bg-green-700 transition">
+                    Lihat Kalender
+                </a>
+            </div>
         </div>
     </div>
 
@@ -70,8 +81,8 @@
             <div class="space-y-4">
                 <div class="flex justify-between">
                     <span class="text-gray-600">Status:</span>
-                    <span class="font-semibold {{ $car->status === 'available' ? 'text-green-600' : 'text-orange-600' }}">
-                        {{ ucfirst($car->status) }}
+                    <span class="font-semibold text-green-600">
+                        Tersedia (cek kalender)
                     </span>
                 </div>
                 <div class="flex justify-between">
@@ -89,4 +100,59 @@
         </a>
     </div>
 </div>
+
+@if($car->image)
+    <div
+        id="imageFullscreenModal"
+        class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/90 p-4"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Preview gambar mobil fullscreen"
+    >
+        <button
+            type="button"
+            id="closeImageFullscreen"
+            class="absolute right-4 top-4 rounded-full bg-white/15 px-3 py-2 text-sm font-semibold text-white hover:bg-white/30"
+            aria-label="Tutup fullscreen"
+        >
+            ✕ Tutup
+        </button>
+        <img src="{{ asset('storage/' . $car->image) }}" alt="{{ $car->name }}" class="max-h-[92vh] max-w-[96vw] rounded-xl object-contain shadow-2xl" />
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const openBtn = document.getElementById('openImageFullscreen');
+        const closeBtn = document.getElementById('closeImageFullscreen');
+        const modal = document.getElementById('imageFullscreenModal');
+
+        if (!openBtn || !closeBtn || !modal) return;
+
+        const openModal = () => {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.classList.add('overflow-hidden');
+        };
+
+        const closeModal = () => {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.classList.remove('overflow-hidden');
+        };
+
+        openBtn.addEventListener('click', openModal);
+        closeBtn.addEventListener('click', closeModal);
+
+        modal.addEventListener('click', function (event) {
+            if (event.target === modal) closeModal();
+        });
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape' && !modal.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
+    });
+    </script>
+@endif
 @endsection

@@ -29,7 +29,7 @@ class Car extends Model
                 $query->where('start_date', '<=', $endDate)
                       ->where('end_date', '>=', $startDate);
             })
-            ->whereNotIn('status', ['cancelled', 'rejected'])
+            ->whereIn('status', ['pending', 'approved'])
             ->exists();
 
         return !$conflictingBooking;

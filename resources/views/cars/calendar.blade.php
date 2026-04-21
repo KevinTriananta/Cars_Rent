@@ -32,7 +32,7 @@
             </div>
             <div class="flex items-center">
                 <div class="w-4 h-4 bg-red-200 rounded mr-2"></div>
-                <span class="text-sm text-gray-600">Tidak Tersedia</span>
+                <span class="text-sm text-gray-600">Sudah dipesan (pending/approved)</span>
             </div>
             <div class="flex items-center">
                 <div class="w-4 h-4 bg-blue-200 rounded mr-2"></div>
@@ -45,11 +45,18 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const calendarContainer = document.getElementById('calendar');
-    const currentDate = new Date();
+    const viewDate = new Date();
     let selectedStartDate = null;
     let selectedEndDate = null;
 
-    // Booked dates from PHP
+    function formatDateLocal(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
+    // Unavailable dates from PHP (pending + approved).
     const bookedDates = @json($bookings->map(function($booking) {
         $dates = [];
         $start = \Carbon\Carbon::parse($booking->start_date);
@@ -61,9 +68,10 @@ document.addEventListener('DOMContentLoaded', function() {
         return $dates;
     })->flatten()->unique()->values()->all());
 
+    const todayStr = formatDateLocal(new Date());
+
     function generateCalendar(year, month) {
         const firstDay = new Date(year, month, 1);
-        const lastDay = new Date(year, month + 1, 0);
         const startDate = new Date(firstDay);
         startDate.setDate(startDate.getDate() - firstDay.getDay());
 
@@ -80,13 +88,13 @@ document.addEventListener('DOMContentLoaded', function() {
             html += '<div class="calendar-day-header">' + day + '</div>';
         });
 
-        let currentDate = new Date(startDate);
+        let cursorDate = new Date(startDate);
         for (let i = 0; i < 42; i++) {
-            const dateStr = currentDate.toISOString().split('T')[0];
-            const isCurrentMonth = currentDate.getMonth() === month;
-            const isToday = dateStr === new Date().toISOString().split('T')[0];
+            const dateStr = formatDateLocal(cursorDate);
+            const isCurrentMonth = cursorDate.getMonth() === month;
+            const isToday = dateStr === todayStr;
             const isBooked = bookedDates.includes(dateStr);
-            const isPast = currentDate < new Date() && !isToday;
+            const isPast = cursorDate < new Date() && !isToday;
             const isSelected = (selectedStartDate && dateStr === selectedStartDate) || 
                              (selectedEndDate && dateStr === selectedEndDate) ||
                              (selectedStartDate && selectedEndDate && dateStr > selectedStartDate && dateStr < selectedEndDate);
@@ -98,8 +106,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (isPast) className += ' past';
             if (isSelected) className += ' selected';
 
-            html += '<div class="' + className + '" data-date="' + dateStr + '">' + currentDate.getDate() + '</div>';
-            currentDate.setDate(currentDate.getDate() + 1);
+            const title = isBooked ? 'Tanggal ini sudah dibooking user lain' : '';
+            html += '<div class="' + className + '" data-date="' + dateStr + '" title="' + title + '">' + cursorDate.getDate() + '</div>';
+            cursorDate.setDate(cursorDate.getDate() + 1);
         }
         
         html += '</div>';
@@ -109,17 +118,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Add event listeners
         document.getElementById('prevMonth').addEventListener('click', function() {
-            currentDate.setMonth(currentDate.getMonth() - 1);
-            generateCalendar(currentDate.getFullYear(), currentDate.getMonth());
+            viewDate.setMonth(viewDate.getMonth() - 1);
+            generateCalendar(viewDate.getFullYear(), viewDate.getMonth());
         });
         
         document.getElementById('nextMonth').addEventListener('click', function() {
-            currentDate.setMonth(currentDate.getMonth() + 1);
-            generateCalendar(currentDate.getFullYear(), currentDate.getMonth());
+            viewDate.setMonth(viewDate.getMonth() + 1);
+            generateCalendar(viewDate.getFullYear(), viewDate.getMonth());
         });
     }
 
-    generateCalendar(currentDate.getFullYear(), currentDate.getMonth());
+    generateCalendar(viewDate.getFullYear(), viewDate.getMonth());
 });
 </script>
 

@@ -23,7 +23,7 @@
                 <select name="car_id" id="carSelect" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 @error('car_id') border-red-500 @enderror" required onchange="updatePrice()">
                     <option value="">-- Pilih Mobil --</option>
                     @foreach($cars as $car)
-                        <option value="{{ $car->id }}" data-price="{{ $car->price_per_day }}" {{ old('car_id') == $car->id ? 'selected' : '' }}>
+                        <option value="{{ $car->id }}" data-price="{{ $car->price_per_day }}" data-calendar-url="{{ route('cars.calendar', $car) }}" {{ (string) old('car_id', $selectedCarId ?? '') === (string) $car->id ? 'selected' : '' }}>
                             {{ $car->name }} ({{ $car->brand }}) - Rp {{ number_format($car->price_per_day, 0, ',', '.') }}/hari
                         </option>
                     @endforeach
@@ -33,6 +33,12 @@
                 @if($cars->isEmpty())
                     <p class="text-red-600 text-sm mt-2">Tidak ada mobil yang tersedia saat ini</p>
                 @endif
+
+                <p class="text-xs text-gray-500 mt-2">
+                    Cek tanggal merah di kalender sebelum memilih tanggal sewa:
+                    <a id="calendarLink" href="#" target="_blank" class="text-blue-600 hover:underline hidden">Lihat kalender mobil</a>
+                    <span id="calendarHint">pilih mobil terlebih dahulu.</span>
+                </p>
             </div>
 
             <div class="grid grid-cols-2 gap-4">
@@ -56,7 +62,6 @@
                 </div>
                 <p class="text-xs text-gray-500 mt-2" id="totalDaysInfo">Total Hari: 0 Hari</p>
                 <p class="text-xs text-gray-500 mt-2">Harga dihitung otomatis berdasarkan durasi sewa</p>
-</div>
             </div>
 
             <div class="flex gap-3 pt-4">
@@ -73,6 +78,7 @@
 
 <script>
     function updatePrice() {
+        updateCalendarLink();
         calculateTotal();
     }
 
@@ -111,9 +117,30 @@ function calculateTotal() {
         totalPriceElement.textContent = 'Rp 0';
     }
 }
+
+function updateCalendarLink() {
+    const carSelect = document.getElementById('carSelect');
+    const link = document.getElementById('calendarLink');
+    const hint = document.getElementById('calendarHint');
+    const selectedOption = carSelect.options[carSelect.selectedIndex];
+    const calendarUrl = selectedOption ? selectedOption.dataset.calendarUrl : null;
+
+    if (calendarUrl) {
+        link.href = calendarUrl;
+        link.classList.remove('hidden');
+        hint.classList.add('hidden');
+    } else {
+        link.classList.add('hidden');
+        hint.classList.remove('hidden');
+    }
+}
+
     // Set minimum date to today
     const today = new Date().toISOString().split('T')[0];
     document.getElementById('startDate').min = today;
     document.getElementById('endDate').min = today;
+
+    updateCalendarLink();
+    calculateTotal();
 </script>
 @endsection

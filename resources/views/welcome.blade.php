@@ -92,14 +92,22 @@
         <section class="bg-gray-900 py-20 text-white">
             <div class="container mx-auto px-4">
                 <div class="text-center mb-16">
-                    <h2 class="text-4xl font-bold mb-4">Pilihan Armada Terbaik</h2>
+                    <h2 class="text-4xl font-bold mb-4">Pilihan Mobil Terbaik</h2>
                     <p class="text-lg text-gray-300">Jelajahi koleksi kendaraan premium kami dengan harga yang kompetitif</p>
                 </div>
                 <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
                     @forelse($featuredCars as $car)
                         <a href="{{ route('cars.show', $car) }}" class="group overflow-hidden rounded-2xl bg-gray-800 shadow-lg transition duration-300 hover:shadow-2xl hover:-translate-y-1">
                             <div class="h-48 overflow-hidden bg-gray-700">
-                                <img src="https://images.unsplash.com/photo-1549921296-3f5e7f5e58bb?auto=format&fit=crop&q=80&w=800" alt="{{ $car->name }}" class="h-full w-full object-cover transition duration-500 group-hover:scale-110" />
+                                @if($car->image)
+                                    <img src="{{ asset('storage/' . $car->image) }}" alt="{{ $car->name }}" class="h-full w-full object-cover transition duration-500 group-hover:scale-110" />
+                                @else
+                                    <div class="h-full w-full bg-gradient-to-r from-blue-400 to-blue-600 flex items-center justify-center">
+                                        <svg class="w-16 h-16 text-white opacity-50" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.22.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm11 0c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
+                                        </svg>
+                                    </div>
+                                @endif
                             </div>
                             <div class="p-6">
                                 <p class="text-sm text-blue-400 font-semibold uppercase tracking-wide mb-2">{{ $car->brand ?? 'Mobil' }}</p>
@@ -122,45 +130,50 @@
         </section>
 
         <section class="container mx-auto px-4 py-20">
-            <div class="grid gap-12 lg:grid-cols-2 lg:items-center">
-                <div class="order-2 lg:order-1">
-                    <div class="relative overflow-hidden rounded-2xl shadow-2xl">
-                        <img src="https://images.unsplash.com/photo-1552820728-8ac41f1ce891?auto=format&fit=crop&q=80&w=800" alt="Layanan Cars Rent" class="w-full h-auto object-cover" />
-                    </div>
-                </div>
-                <div class="order-1 lg:order-2">
-                    <h2 class="text-4xl font-bold text-gray-900 mb-6">Mengapa Memilih Cars Rent?</h2>
-                    <p class="text-lg text-gray-600 mb-8">Kami menyediakan pengalaman rental mobil terbaik dengan armada berkualitas, harga kompetitif, dan layanan pelanggan 24/7 yang siap membantu setiap kebutuhan perjalanan Anda.</p>
-                    <div class="space-y-4 mb-10">
-                        <div class="flex items-start gap-4">
-                            <div class="flex-shrink-0 w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center mt-1">
-                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                            </div>
-                            <div>
-                                <h3 class="font-bold text-gray-900">Armada Lengkap & Modern</h3>
-                                <p class="text-gray-600 text-sm">Pilihan kendaraan dari berbagai tipe dan ukuran</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-4">
-                            <div class="flex-shrink-0 w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center mt-1">
-                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                            </div>
-                            <div>
-                                <h3 class="font-bold text-gray-900">Harga Terjangkau</h3>
-                                <p class="text-gray-600 text-sm">Tarif kompetitif tanpa biaya tersembunyi</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-4">
-                            <div class="flex-shrink-0 w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center mt-1">
-                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                            </div>
-                            <div>
-                                <h3 class="font-bold text-gray-900">Layanan Terpercaya</h3>
-                                <p class="text-gray-600 text-sm">Customer service responsif 24/7</p>
-                            </div>
+            <div class="overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-xl">
+                <div class="grid lg:grid-cols-2 lg:items-stretch">
+                    <div class="relative min-h-[320px] sm:min-h-[420px] lg:min-h-[560px]">
+                        <img src="about-rent.png" alt="Mobil premium Cars Rent" class="h-full w-full object-cover" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900/30 via-transparent to-transparent"></div>
+                        <div class="absolute left-6 bottom-6 rounded-xl bg-white/95 px-4 py-3 shadow-lg backdrop-blur-sm hover:opacity-0 delay-2s">
+                            <p class="text-sm font-semibold text-gray-900">Mobil Premium</p>
+                            <p class="text-xs text-gray-600">Bersih, terawat, siap jalan kapan saja.</p>
                         </div>
                     </div>
-                    <a href="{{ route('cars.index') }}" class="inline-flex items-center justify-center px-8 py-3 rounded-full bg-blue-600 text-white font-semibold shadow-lg hover:bg-blue-700 hover:shadow-xl transition transform hover:scale-105">Pesan Sekarang</a>
+                    <div class="relative bg-gradient-to-br from-white via-slate-50 to-blue-50 px-6 py-10 sm:px-10 lg:px-14 lg:py-14">
+                        <h2 class="text-3xl font-bold leading-tight text-gray-900 mb-6">Mengapa Memilih Cars Rent?</h2>
+                        <p class="text-lg leading-relaxed text-gray-700 mb-8">Kami menyediakan pengalaman rental mobil terbaik dengan kondisi berkualitas, harga kompetitif, dan layanan pelanggan 24/7 yang siap membantu setiap kebutuhan perjalanan Anda.</p>
+                        <div class="space-y-5 mb-10">
+                            <div class="flex items-start gap-4">
+                                <div class="mt-1 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-blue-600">
+                                    <svg class="h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" d="M5 13l4 4L19 7"></path></svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-bold text-gray-900">Mobil Lengkap & Modern</h3>
+                                    <p class="text-sm text-gray-600">Pilihan kendaraan dari berbagai tipe dan ukuran untuk kebutuhan harian maupun perjalanan jauh.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="mt-1 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-blue-600">
+                                    <svg class="h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" d="M5 13l4 4L19 7"></path></svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-bold text-gray-900">Harga Terjangkau</h3>
+                                    <p class="text-sm text-gray-600">Tarif transparan dan kompetitif tanpa biaya tersembunyi.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="mt-1 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-blue-600">
+                                    <svg class="h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" d="M5 13l4 4L19 7"></path></svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-bold text-gray-900">Layanan Terpercaya</h3>
+                                    <p class="text-sm text-gray-600">Tim customer service responsif 24/7 siap membantu kapan pun Anda butuh.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="{{ route('cars.index') }}" class="inline-flex items-center justify-center rounded-full bg-blue-600 px-8 py-3 font-semibold text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-xl">Pesan Sekarang</a>
+                    </div>
                 </div>
             </div>
         </section>
