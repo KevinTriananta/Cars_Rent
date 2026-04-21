@@ -45,7 +45,7 @@
                 </div>
                 <div class="lg:w-8/12 ">
                     <div class="relative overflow-hidden rounded-1xl">
-                        <img src="LP.png" alt="Mobil rental" class="w-full h-auto object-cover"/>
+                        <img src="lp.png" alt="Mobil rental" class="w-full h-auto object-cover"/>
                     </div>
                 </div>
             </div>
