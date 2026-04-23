@@ -14,7 +14,7 @@
         </div>
     @endif
     
-    <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
+    <div class="bg-white p-5 sm:p-8 rounded-3xl shadow-sm border border-gray-100">
         <form action="{{ route('bookings.store') }}" method="POST" class="space-y-4" id="bookingForm">
             @csrf
             
@@ -41,7 +41,7 @@
                 </p>
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Tanggal Mulai</label>
                     <input type="date" name="start_date" id="startDate" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 @error('start_date') border-red-500 @enderror" value="{{ old('start_date') }}" required onchange="calculateTotal()">
@@ -56,7 +56,7 @@
             </div>
 
             <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <div class="flex justify-between items-center">
+                <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                     <span class="text-gray-700 font-medium">Total Harga:</span>
                     <span class="text-2xl font-bold text-blue-600" id="totalPrice">Rp 0</span>
                 </div>
@@ -64,7 +64,7 @@
                 <p class="text-xs text-gray-500 mt-2">Harga dihitung otomatis berdasarkan durasi sewa</p>
             </div>
 
-            <div class="flex gap-3 pt-4">
+            <div class="grid grid-cols-1 gap-3 pt-4 sm:grid-cols-2">
                 <button type="submit" class="flex-1 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition font-semibold">
                     Konfirmasi Pesanan
                 </button>

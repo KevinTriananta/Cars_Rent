@@ -56,9 +56,34 @@ class CarsController extends Controller
             $query->where('price_per_day', '<=', $request->max_price);
         }
 
+        $sortOptions = [
+            'name_asc' => ['column' => 'name', 'direction' => 'asc'],
+            'name_desc' => ['column' => 'name', 'direction' => 'desc'],
+            'brand_asc' => ['column' => 'brand', 'direction' => 'asc'],
+            'brand_desc' => ['column' => 'brand', 'direction' => 'desc'],
+            'price_asc' => ['column' => 'price_per_day', 'direction' => 'asc'],
+            'price_desc' => ['column' => 'price_per_day', 'direction' => 'desc'],
+        ];
+
         // Sort
-        $sortBy = $request->get('sort', 'name');
-        $sortDirection = $request->get('direction', 'asc');
+        $selectedSort = $request->get('sort_option');
+
+        if (isset($sortOptions[$selectedSort])) {
+            $sortBy = $sortOptions[$selectedSort]['column'];
+            $sortDirection = $sortOptions[$selectedSort]['direction'];
+        } else {
+            $sortBy = $request->get('sort', 'name');
+            $sortDirection = $request->get('direction', 'asc');
+        }
+
+        if (! in_array($sortBy, ['name', 'brand', 'price_per_day'], true)) {
+            $sortBy = 'name';
+        }
+
+        if (! in_array($sortDirection, ['asc', 'desc'], true)) {
+            $sortDirection = 'asc';
+        }
+
         $query->orderBy($sortBy, $sortDirection);
 
         $cars = $query->paginate(12);

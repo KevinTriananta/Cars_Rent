@@ -15,12 +15,12 @@
             <form id="bulkForm" method="POST" action="{{ route('admin.cars.bulk') }}">
                 @csrf
                 <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
-                    <div class="flex items-center justify-between">
+                    <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                         <div class="flex items-center">
                             <input type="checkbox" id="selectAll" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                             <label for="selectAll" class="ml-2 text-sm text-gray-700">Pilih Semua</label>
                         </div>
-                        <div class="flex gap-2" id="bulkActions" style="display: none;">
+                        <div class="flex flex-wrap gap-2" id="bulkActions" style="display: none;">
                             <button type="submit" name="action" value="delete" onclick="return confirm('Hapus mobil yang dipilih?')" 
                                     class="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700">
                                 Hapus Terpilih
@@ -37,7 +37,8 @@
                     </div>
                 </div>
 
-                <table class="min-w-full divide-y divide-gray-200">
+                <div class="overflow-x-auto">
+                <table class="min-w-[760px] w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
                             <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-gray-500 w-12">
@@ -81,6 +82,7 @@
                         @endforelse
                     </tbody>
                 </table>
+                </div>
             </form>
         </div>
     </div>
@@ -96,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function updateBulkActionsVisibility() {
         const checkedBoxes = document.querySelectorAll('.car-checkbox:checked');
-        bulkActions.style.display = checkedBoxes.length > 0 ? 'block' : 'none';
+        bulkActions.style.display = checkedBoxes.length > 0 ? 'flex' : 'none';
     }
 
     function updateSelectAllState() {

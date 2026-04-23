@@ -18,12 +18,12 @@
         <div class="overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm">
             @if($bookings->count() > 0)
                 <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
-                    <div class="flex items-center justify-between">
+                    <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                         <div class="flex items-center">
                             <input type="checkbox" id="selectAll" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
                             <label for="selectAll" class="ml-2 text-sm text-gray-700">Pilih Semua</label>
                         </div>
-                        <div class="flex gap-2" id="bulkActions" style="display: none;">
+                        <div class="flex flex-wrap gap-2" id="bulkActions" style="display: none;">
                             <button type="button" onclick="submitBulk('approve')" 
                                     class="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700">
                                 Setujui Terpilih
@@ -40,7 +40,8 @@
                     </div>
                 </div>
 
-                <table class="min-w-full divide-y divide-gray-200">
+                <div class="overflow-x-auto">
+                <table class="min-w-[980px] w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
                             <th class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-gray-500 w-12">
@@ -113,6 +114,7 @@
                         @endforeach
                     </tbody>
                 </table>
+                </div>
             @else
                 <div class="p-12 text-center text-sm text-gray-500">Tidak ada booking yang ditemukan.</div>
             @endif

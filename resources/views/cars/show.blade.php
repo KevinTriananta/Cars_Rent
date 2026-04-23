@@ -11,7 +11,7 @@
                 class="group relative block w-full focus:outline-none focus:ring-4 focus:ring-blue-200"
                 aria-label="Lihat gambar mobil fullscreen"
             >
-                <img src="{{ asset('storage/' . $car->image) }}" alt="{{ $car->name }}" class="w-full h-64 object-cover" />
+                <img src="{{ asset('storage/' . $car->image) }}" alt="{{ $car->name }}" class="w-full h-56 sm:h-64 object-cover" />
                 <span class="absolute right-3 top-3 rounded-lg bg-black/55 px-3 py-1 text-xs font-semibold text-white opacity-90 group-hover:bg-black/70">
                     Klik untuk fullscreen
                 </span>
@@ -24,19 +24,19 @@
             </div>
         @endif
         
-        <div class="p-6">
-            <div class="flex justify-between items-start mb-4">
+        <div class="p-5 sm:p-6">
+            <div class="mb-4 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                 <div>
-                    <h1 class="text-3xl font-bold text-gray-900">{{ $car->name }}</h1>
+                    <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">{{ $car->name }}</h1>
                     <p class="text-lg text-gray-600">{{ $car->brand }}</p>
                 </div>
-                <div class="text-right">
-                    <p class="text-3xl font-bold text-blue-600">Rp {{ number_format($car->price_per_day, 0, ',', '.') }}</p>
+                <div class="sm:text-right">
+                    <p class="text-2xl sm:text-3xl font-bold text-blue-600">Rp {{ number_format($car->price_per_day, 0, ',', '.') }}</p>
                     <p class="text-sm text-gray-500">per hari</p>
                 </div>
             </div>
             
-            <div class="flex items-center gap-4 mb-6">
+            <div class="mb-6 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-4">
                 <span class="inline-block px-4 py-2 rounded-full text-sm font-semibold bg-green-100 text-green-700">
                     ✓ Tersedia
                 </span>
@@ -49,7 +49,7 @@
                 Cek kalender untuk melihat ketersediaan mobil pada tanggal yang anda inginkan.
             </p>
 
-            <div class="flex gap-3">
+            <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <a href="{{ route('bookings.create', ['car' => $car->id]) }}" class="flex-1 text-center bg-blue-600 text-white py-3 rounded-full text-lg font-semibold hover:bg-blue-700 transition">
                     Pesan Sekarang
                 </a>
@@ -62,30 +62,30 @@
 
     <!-- Specifications -->
     <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-6">
-        <h2 class="text-2xl font-bold text-gray-900 mb-4">Spesifikasi Mobil</h2>
+        <h2 class="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Spesifikasi Mobil</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="space-y-4">
-                <div class="flex justify-between">
+                <div class="flex items-start justify-between gap-4">
                     <span class="text-gray-600">Merk:</span>
                     <span class="font-semibold">{{ $car->brand }}</span>
                 </div>
-                <div class="flex justify-between">
+                <div class="flex items-start justify-between gap-4">
                     <span class="text-gray-600">Nama:</span>
                     <span class="font-semibold">{{ $car->name }}</span>
                 </div>
-                <div class="flex justify-between">
+                <div class="flex items-start justify-between gap-4">
                     <span class="text-gray-600">Harga per Hari:</span>
                     <span class="font-semibold text-blue-600">Rp {{ number_format($car->price_per_day, 0, ',', '.') }}</span>
                 </div>
             </div>
             <div class="space-y-4">
-                <div class="flex justify-between">
+                <div class="flex items-start justify-between gap-4">
                     <span class="text-gray-600">Status:</span>
                     <span class="font-semibold text-green-600">
                         Tersedia (cek kalender)
                     </span>
                 </div>
-                <div class="flex justify-between">
+                <div class="flex items-start justify-between gap-4">
                     <span class="text-gray-600">Kategori:</span>
                     <span class="font-semibold">Mobil</span>
                 </div>

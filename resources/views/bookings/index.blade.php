@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="space-y-6">
-    <div class="flex justify-between items-center">
+    <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h1 class="text-2xl font-bold text-gray-800">Riwayat Pesanan Saya</h1>
         <a href="{{ route('bookings.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">+ Pesan Mobil Baru</a>
     </div>
@@ -15,7 +15,8 @@
 
     <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
         @if($bookings->count() > 0)
-            <table class="w-full">
+            <div class="overflow-x-auto">
+            <table class="min-w-[680px] w-full">
                 <thead class="bg-gray-50 border-b border-gray-100">
                     <tr>
                         <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600">Mobil</th>
@@ -60,6 +61,7 @@
                     @endforelse
                 </tbody>
             </table>
+            </div>
         @else
             <div class="p-8 text-center">
                 <p class="text-gray-500 mb-4">Anda belum memiliki pesanan</p>

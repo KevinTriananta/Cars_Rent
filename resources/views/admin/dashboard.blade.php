@@ -4,25 +4,25 @@
     <div class="space-y-6">
         <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
-                <p class="text-3xl uppercase tracking-[0.2em] text-blue-600 font-semibold">Admin Dashboard</p>
+                <p class="text-2xl sm:text-3xl uppercase tracking-[0.16em] sm:tracking-[0.2em] text-blue-600 font-semibold">Admin Dashboard</p>
                 <p class="mt-2 text-gray-500 max-w-2xl">Pantau pendapatan, booking harian, status mobil, dan reminder penting secara cepat.</p>
             </div>
             <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                <div class="rounded-3xl bg-gray-50 border border-gray-200 p-5 text-center shadow-sm">
+                <div class="rounded-3xl bg-gray-50 border border-gray-200 p-4 sm:p-5 text-center shadow-sm">
                     <p class="text-xs uppercase tracking-[0.2em] text-gray-500">Total Mobil</p>
-                    <p class="mt-3 text-3xl font-bold text-gray-900">{{ $cars }}</p>
+                    <p class="mt-3 text-2xl sm:text-3xl font-bold text-gray-900">{{ $cars }}</p>
                 </div>
                 <div class="rounded-3xl bg-gray-50 border border-gray-200 p-4 text-center shadow-sm">
                     <p class="text-xs uppercase tracking-[0.2em] text-gray-500">Total Booking</p>
-                    <p class="mt-3 text-3xl font-bold text-gray-900">{{ $bookings }}</p>
+                    <p class="mt-3 text-2xl sm:text-3xl font-bold text-gray-900">{{ $bookings }}</p>
                 </div>
-                <div class="rounded-3xl bg-gray-50 border border-gray-200 p-8 text-center shadow-sm">
+                <div class="rounded-3xl bg-gray-50 border border-gray-200 p-4 sm:p-8 text-center shadow-sm">
                     <p class="text-xs uppercase tracking-[0.2em] text-gray-500">Pending</p>
-                    <p class="mt-3 text-3xl font-bold text-yellow-600">{{ $pending }}</p>
+                    <p class="mt-3 text-2xl sm:text-3xl font-bold text-yellow-600">{{ $pending }}</p>
                 </div>
-                <div class="rounded-3xl bg-gray-50 border border-gray-200 p-5 text-center shadow-sm">
+                <div class="rounded-3xl bg-gray-50 border border-gray-200 p-4 sm:p-5 text-center shadow-sm">
                     <p class="text-xs uppercase tracking-[0.2em] text-gray-500">Mobil Disewa</p>
-                    <p class="mt-3 text-3xl font-bold text-red-600">{{ $rentedCars }}</p>
+                    <p class="mt-3 text-2xl sm:text-3xl font-bold text-red-600">{{ $rentedCars }}</p>
                 </div>
             </div>
         </div>
@@ -30,22 +30,22 @@
         <div class="grid gap-6 lg:grid-cols-3">
             <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
                 <p class="text-sm font-medium text-gray-500">Pendapatan Hari Ini</p>
-                <p class="mt-4 text-3xl font-semibold text-gray-900">Rp {{ number_format($incomeToday, 0, ',', '.') }}</p>
+                <p class="mt-4 break-words text-2xl sm:text-3xl font-semibold text-gray-900">Rp {{ number_format($incomeToday, 0, ',', '.') }}</p>
             </div>
             <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
                 <p class="text-sm font-medium text-gray-500">Pendapatan Bulan Ini</p>
-                <p class="mt-4 text-3xl font-semibold text-gray-900">Rp {{ number_format($incomeMonth, 0, ',', '.') }}</p>
+                <p class="mt-4 break-words text-2xl sm:text-3xl font-semibold text-gray-900">Rp {{ number_format($incomeMonth, 0, ',', '.') }}</p>
             </div>
             <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
                 <p class="text-sm font-medium text-gray-500">Pendapatan Tahun Ini</p>
-                <p class="mt-4 text-3xl font-semibold text-gray-900">Rp {{ number_format($incomeYear, 0, ',', '.') }}</p>
+                <p class="mt-4 break-words text-2xl sm:text-3xl font-semibold text-gray-900">Rp {{ number_format($incomeYear, 0, ',', '.') }}</p>
             </div>
         </div>
 
         <div class="grid gap-6 xl:grid-cols-[1.8fr_1fr]">
             <div class="space-y-6">
                 <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
-                    <div class="flex items-center justify-between gap-4">
+                    <div class="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
                         <div>
                             <h2 class="text-lg font-semibold text-gray-900">Booking Hari Ini</h2>
                             <p class="mt-1 text-sm text-gray-500">Fokus operasional untuk hari ini.</p>
@@ -59,7 +59,7 @@
                         <div class="mt-6 space-y-4">
                             @foreach($todayBookings as $booking)
                                 <div class="rounded-3xl border border-gray-100 bg-gray-50 p-4">
-                                    <div class="flex items-center justify-between gap-4">
+                                    <div class="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
                                         <div>
                                             <p class="font-semibold text-gray-900">{{ $booking->user->name }}</p>
                                             <p class="text-sm text-gray-500">{{ $booking->car->name }} · {{ $booking->car->brand }}</p>
@@ -77,7 +77,7 @@
                 </div>
 
                 <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
-                    <div class="flex items-center justify-between gap-4">
+                    <div class="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
                         <div>
                             <h2 class="text-lg font-semibold text-gray-900">Aktivitas Terbaru</h2>
                             <p class="mt-1 text-sm text-gray-500">Ringkasan aktivitas terkini di sistem.</p>
@@ -88,7 +88,7 @@
                     <div class="mt-6 space-y-4">
                         @forelse($activityFeed as $activity)
                             <div class="rounded-3xl border border-gray-100 bg-gray-50 p-4">
-                                <div class="flex items-start justify-between gap-4">
+                                <div class="flex flex-col items-start justify-between gap-2 sm:flex-row sm:gap-4">
                                     <p class="text-sm text-gray-700">{{ $activity['message'] }}</p>
                                     <span class="text-xs text-gray-400">{{ \Illuminate\Support\Carbon::parse($activity['time'])->diffForHumans() }}</span>
                                 </div>
@@ -102,7 +102,7 @@
 
             <div class="space-y-6">
                 <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
-                    <div class="flex items-center justify-between gap-4">
+                    <div class="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
                         <div>
                             <h2 class="text-lg font-semibold text-gray-900">Status Mobil</h2>
                             <p class="mt-1 text-sm text-gray-500">Ringkasan ketersediaan mobil.</p>
@@ -111,17 +111,17 @@
                     <div class="mt-6 grid gap-4 sm:grid-cols-2">
                         <div class="rounded-3xl bg-blue-50 p-5">
                             <p class="text-sm text-blue-700">🟢 Tersedia</p>
-                            <p class="mt-3 text-3xl font-semibold text-blue-900">{{ $carStatuses['available'] }}</p>
+                            <p class="mt-3 text-2xl sm:text-3xl font-semibold text-blue-900">{{ $carStatuses['available'] }}</p>
                         </div>
                         <div class="rounded-3xl bg-red-50 p-5">
                             <p class="text-sm text-red-700">🔴 Disewa</p>
-                            <p class="mt-3 text-3xl font-semibold text-red-900">{{ $carStatuses['rented'] }}</p>
+                            <p class="mt-3 text-2xl sm:text-3xl font-semibold text-red-900">{{ $carStatuses['rented'] }}</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
-                    <div class="flex items-center justify-between gap-4">
+                    <div class="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
                         <div>
                             <h2 class="text-lg font-semibold text-gray-900">Reminder & Alert</h2>
                             <p class="mt-1 text-sm text-gray-500">Notifikasi penting terkait aktivitas sistem.</p>
