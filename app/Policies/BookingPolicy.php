@@ -13,7 +13,7 @@ class BookingPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,7 +21,7 @@ class BookingPolicy
      */
     public function view(User $user, Booking $booking): bool
     {
-        return false;
+        return $user->role === 'admin' || $booking->user_id === $user->id;
     }
 
     /**
@@ -29,7 +29,7 @@ class BookingPolicy
      */
     public function create(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**

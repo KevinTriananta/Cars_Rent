@@ -86,7 +86,7 @@
                                 <td class="px-6 py-4 text-right text-sm font-medium">
                                     <div class="flex flex-wrap justify-end gap-2">
                                         @if($booking->status !== 'approved')
-                                            <form action="{{ route('admin.bookings.approve', $booking) }}" method="POST" class="inline-block">
+                                            <form action="{{ route('admin.bookings.approve', $booking) }}" method="POST" class="inline-block" data-confirm-form="true" data-confirm-title="Setujui booking ini?" data-confirm-text="Pelanggan akan menerima notifikasi email bahwa booking disetujui." data-confirm-button="Ya, setujui">
                                                 @csrf
                                                 @method('PATCH')
                                                 <button type="submit" class="rounded-full bg-green-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-green-700">Setujui</button>
@@ -94,7 +94,7 @@
                                         @endif
 
                                         @if($booking->status !== 'rejected')
-                                            <form action="{{ route('admin.bookings.reject', $booking) }}" method="POST" class="inline-block">
+                                            <form action="{{ route('admin.bookings.reject', $booking) }}" method="POST" class="inline-block" data-confirm-form="true" data-confirm-title="Tolak booking ini?" data-confirm-text="Pelanggan akan menerima notifikasi email bahwa booking ditolak." data-confirm-button="Ya, tolak">
                                                 @csrf
                                                 @method('PATCH')
                                                 <button type="submit" class="rounded-full bg-red-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-red-700">Tolak</button>
@@ -102,7 +102,7 @@
                                         @endif
 
                                         @if($booking->status !== 'pending')
-                                            <form action="{{ route('admin.bookings.pending', $booking) }}" method="POST" class="inline-block">
+                                            <form action="{{ route('admin.bookings.pending', $booking) }}" method="POST" class="inline-block" data-confirm-form="true" data-confirm-title="Ubah status ke pending?" data-confirm-text="Booking akan kembali menunggu proses admin." data-confirm-button="Ya, ubah">
                                                 @csrf
                                                 @method('PATCH')
                                                 <button type="submit" class="rounded-full bg-yellow-500 px-4 py-2 text-xs font-semibold text-white transition hover:bg-yellow-600">Pending</button>
@@ -128,7 +128,7 @@
     function submitBulk(action) {
         const checkboxes = document.querySelectorAll('.booking-checkbox:checked');
         if (checkboxes.length === 0) {
-            alert('Pilih minimal satu booking!');
+            window.CarsRentUI?.showToast('Pilih minimal satu booking.', 'error');
             return;
         }
 
@@ -148,6 +148,35 @@
             hiddenInput.value = cb.value;
             inputsContainer.appendChild(hiddenInput);
         });
+
+        const messages = {
+            approve: {
+                title: 'Setujui booking terpilih?',
+                text: 'Semua booking yang dipilih akan diubah menjadi disetujui.',
+                button: 'Ya, setujui'
+            },
+            reject: {
+                title: 'Tolak booking terpilih?',
+                text: 'Semua booking yang dipilih akan diubah menjadi ditolak.',
+                button: 'Ya, tolak'
+            },
+            pending: {
+                title: 'Set pending booking terpilih?',
+                text: 'Semua booking yang dipilih akan dikembalikan ke status pending.',
+                button: 'Ya, ubah'
+            }
+        };
+
+        const current = messages[action];
+        if (window.CarsRentUI) {
+            window.CarsRentUI.confirm({
+                title: current.title,
+                text: current.text,
+                confirmLabel: current.button,
+                onConfirm: () => form.submit(),
+            });
+            return;
+        }
 
         form.submit();
     }

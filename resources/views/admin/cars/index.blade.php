@@ -21,15 +21,15 @@
                             <label for="selectAll" class="ml-2 text-sm text-gray-700">Pilih Semua</label>
                         </div>
                         <div class="flex flex-wrap gap-2" id="bulkActions" style="display: none;">
-                            <button type="submit" name="action" value="delete" onclick="return confirm('Hapus mobil yang dipilih?')" 
+                            <button type="submit" name="action" value="delete" data-confirm-action="true" data-confirm-title="Hapus mobil terpilih?" data-confirm-text="Data mobil yang dipilih akan dihapus permanen." data-confirm-button="Ya, hapus"
                                     class="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700">
                                 Hapus Terpilih
                             </button>
-                            <button type="submit" name="action" value="available" 
+                            <button type="submit" name="action" value="available" data-confirm-action="true" data-confirm-title="Set mobil terpilih menjadi available?" data-confirm-text="Status mobil yang dipilih akan diubah menjadi available." data-confirm-button="Ya, ubah"
                                     class="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700">
                                 Set Available
                             </button>
-                            <button type="submit" name="action" value="rented" 
+                            <button type="submit" name="action" value="rented" data-confirm-action="true" data-confirm-title="Set mobil terpilih menjadi rented?" data-confirm-text="Status mobil yang dipilih akan diubah menjadi rented." data-confirm-button="Ya, ubah"
                                     class="bg-orange-600 text-white px-3 py-1 rounded text-sm hover:bg-orange-700">
                                 Set Rented
                             </button>
@@ -68,10 +68,10 @@
                                 </td>
                                 <td class="px-6 py-4 text-right text-sm font-medium">
                                     <a href="{{ route('admin.cars.edit', $car) }}" class="text-blue-600 hover:text-blue-800">Edit</a>
-                                    <form action="{{ route('admin.cars.destroy', $car) }}" method="POST" class="inline-block ml-3">
+                                    <form action="{{ route('admin.cars.destroy', $car) }}" method="POST" class="inline-block ml-3" data-confirm-form="true" data-confirm-title="Hapus mobil ini?" data-confirm-text="Mobil yang dihapus tidak akan tampil lagi untuk user." data-confirm-button="Ya, hapus">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" onclick="return confirm('Hapus mobil ini?')" class="text-red-600 hover:text-red-800">Hapus</button>
+                                        <button type="submit" class="text-red-600 hover:text-red-800">Hapus</button>
                                     </form>
                                 </td>
                             </tr>
@@ -91,6 +91,7 @@
 @section('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    const bulkForm = document.getElementById('bulkForm');
     const selectAllCheckbox = document.getElementById('selectAll');
     const headerCheckbox = document.getElementById('headerCheckbox');
     const carCheckboxes = document.querySelectorAll('.car-checkbox');
@@ -131,6 +132,31 @@ document.addEventListener('DOMContentLoaded', function() {
             updateSelectAllState();
             updateBulkActionsVisibility();
         });
+    });
+
+    bulkForm?.addEventListener('submit', function(event) {
+        const submitter = event.submitter;
+        if (!submitter || submitter.dataset.confirmAction !== 'true') return;
+
+        const selectedCars = document.querySelectorAll('.car-checkbox:checked');
+        if (selectedCars.length === 0) {
+            event.preventDefault();
+            window.CarsRentUI?.showToast('Pilih minimal satu mobil.', 'error');
+            return;
+        }
+
+        event.preventDefault();
+
+        if (window.CarsRentUI) {
+            window.CarsRentUI.confirm({
+                title: submitter.dataset.confirmTitle || 'Lanjutkan aksi?',
+                text: submitter.dataset.confirmText || 'Perubahan ini akan diterapkan ke mobil terpilih.',
+                confirmLabel: submitter.dataset.confirmButton || 'Lanjutkan',
+                onConfirm: () => bulkForm.submit(),
+            });
+        } else {
+            bulkForm.submit();
+        }
     });
 });
 </script>

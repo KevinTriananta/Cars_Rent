@@ -95,17 +95,26 @@ class BookingController extends Controller
      */
     public function payment(Booking $booking)
     {
-        
-        // Generate WhatsApp message
-        $message = "Halo Admin Cars Rent!%0A%0A";
-        $message .= "Saya ingin melakukan pembayaran untuk booking:%0A";
-        $message .= "ID Booking: {$booking->id}%0A";
-        $message .= "Mobil: {$booking->car->name} ({$booking->car->brand})%0A";
-        $message .= "Tanggal: {$booking->start_date} - {$booking->end_date}%0A";
-        $message .= "Total: Rp " . number_format($booking->total_price, 0, ',', '.') . "%0A%0A";
-        $message .= "Mohon konfirmasi pembayaran. Terima kasih!";
-        
-        $whatsappUrl = "https://wa.me/6285891004010?text=" . $message; // Ganti nomor WhatsApp admin
+        $this->authorize('view', $booking);
+        $booking->loadMissing('car', 'user');
+
+        $bookingTime = $booking->created_at
+            ? $booking->created_at->timezone('Asia/Jakarta')->format('d M Y, H:i') . ' WIB'
+            : now('Asia/Jakarta')->format('d M Y, H:i') . ' WIB';
+
+        $message = rawurlencode(
+            "Halo Admin Cars Rent!\n\n" .
+            "Saya ingin melakukan pembayaran untuk booking:\n" .
+            "ID Booking: {$booking->id}\n" .
+            "Nama Pemesan: {$booking->user->name}\n" .
+            "Mobil: {$booking->car->name} ({$booking->car->brand})\n" .
+            "Tanggal Sewa: " . $booking->start_date->format('d M Y') . " - " . $booking->end_date->format('d M Y') . "\n" .
+            "Waktu Pemesanan: {$bookingTime}\n" .
+            "Total: Rp " . number_format($booking->total_price, 0, ',', '.') . "\n\n" .
+            "Mohon konfirmasi pembayaran. Terima kasih!"
+        );
+
+        $whatsappUrl = "https://wa.me/6285891004010?text=" . $message;
         
         return view('bookings.payment', compact('booking', 'whatsappUrl'));
     }

@@ -23,7 +23,16 @@
                 <select name="car_id" id="carSelect" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 @error('car_id') border-red-500 @enderror" required onchange="updatePrice()">
                     <option value="">-- Pilih Mobil --</option>
                     @foreach($cars as $car)
-                        <option value="{{ $car->id }}" data-price="{{ $car->price_per_day }}" data-calendar-url="{{ route('cars.calendar', $car) }}" {{ (string) old('car_id', $selectedCarId ?? '') === (string) $car->id ? 'selected' : '' }}>
+                        <option
+                            value="{{ $car->id }}"
+                            data-name="{{ $car->name }}"
+                            data-brand="{{ $car->brand }}"
+                            data-price="{{ $car->price_per_day }}"
+                            data-status="{{ $car->status }}"
+                            data-image="{{ $car->image ? asset('storage/' . $car->image) : '' }}"
+                            data-calendar-url="{{ route('cars.calendar', $car) }}"
+                            {{ (string) old('car_id', $selectedCarId ?? '') === (string) $car->id ? 'selected' : '' }}
+                        >
                             {{ $car->name }} ({{ $car->brand }}) - Rp {{ number_format($car->price_per_day, 0, ',', '.') }}/hari
                         </option>
                     @endforeach
@@ -39,6 +48,33 @@
                     <a id="calendarLink" href="#" target="_blank" class="text-blue-600 hover:underline hidden">Lihat kalender mobil</a>
                     <span id="calendarHint">pilih mobil terlebih dahulu.</span>
                 </p>
+            </div>
+
+            <div id="carDetailsCard" class="hidden overflow-hidden rounded-2xl border border-gray-200 bg-gray-50">
+                <div class="grid grid-cols-1 sm:grid-cols-[160px_minmax(0,1fr)]">
+                    <div id="carDetailsImageWrap" class="hidden h-40 sm:h-full">
+                        <img id="carDetailsImage" src="" alt="Preview mobil" class="h-full w-full object-cover">
+                    </div>
+                    <div class="p-4 sm:p-5">
+                        <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                            <div>
+                                <p id="carDetailsName" class="text-lg font-bold text-gray-900"></p>
+                                <p id="carDetailsBrand" class="text-sm text-gray-500"></p>
+                            </div>
+                            <span id="carDetailsStatus" class="inline-flex rounded-full px-3 py-1 text-xs font-semibold"></span>
+                        </div>
+                        <div class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                            <div class="rounded-xl bg-white px-4 py-3">
+                                <p class="text-xs uppercase tracking-wide text-gray-500">Harga per Hari</p>
+                                <p id="carDetailsPrice" class="mt-1 text-base font-semibold text-blue-600"></p>
+                            </div>
+                            <div class="rounded-xl bg-white px-4 py-3">
+                                <p class="text-xs uppercase tracking-wide text-gray-500">Info</p>
+                                <p class="mt-1 text-sm text-gray-600">Pastikan cek kalender untuk tanggal yang tersedia.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -65,7 +101,13 @@
             </div>
 
             <div class="grid grid-cols-1 gap-3 pt-4 sm:grid-cols-2">
-                <button type="submit" class="flex-1 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition font-semibold">
+                <button
+                    type="submit"
+                    class="flex-1 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition font-semibold"
+                    data-confirm-title="Konfirmasi pesanan?"
+                    data-confirm-text="Periksa lagi mobil dan tanggal sewa sebelum membuat booking."
+                    data-confirm-button="Ya, buat pesanan"
+                >
                     Konfirmasi Pesanan
                 </button>
                 <a href="{{ route('bookings.index') }}" class="flex-1 bg-gray-300 text-gray-800 py-3 rounded-lg hover:bg-gray-400 transition font-semibold text-center">
@@ -78,6 +120,7 @@
 
 <script>
     function updatePrice() {
+        updateCarDetails();
         updateCalendarLink();
         calculateTotal();
     }
@@ -135,11 +178,50 @@ function updateCalendarLink() {
     }
 }
 
+function updateCarDetails() {
+    const carSelect = document.getElementById('carSelect');
+    const card = document.getElementById('carDetailsCard');
+    const imageWrap = document.getElementById('carDetailsImageWrap');
+    const image = document.getElementById('carDetailsImage');
+    const name = document.getElementById('carDetailsName');
+    const brand = document.getElementById('carDetailsBrand');
+    const price = document.getElementById('carDetailsPrice');
+    const status = document.getElementById('carDetailsStatus');
+    const selectedOption = carSelect.options[carSelect.selectedIndex];
+
+    if (!selectedOption || !selectedOption.value) {
+        card.classList.add('hidden');
+        return;
+    }
+
+    name.textContent = selectedOption.dataset.name || '-';
+    brand.textContent = selectedOption.dataset.brand || '-';
+    price.textContent = 'Rp ' + new Intl.NumberFormat('id-ID').format(parseInt(selectedOption.dataset.price || '0', 10)) + ' / hari';
+
+    const currentStatus = selectedOption.dataset.status || 'available';
+    const statusText = currentStatus === 'available' ? 'Siap disewa' : 'Perlu cek jadwal';
+    status.textContent = statusText;
+    status.className = 'inline-flex rounded-full px-3 py-1 text-xs font-semibold ' + (currentStatus === 'available'
+        ? 'bg-green-100 text-green-700'
+        : 'bg-yellow-100 text-yellow-700');
+
+    if (selectedOption.dataset.image) {
+        image.src = selectedOption.dataset.image;
+        imageWrap.classList.remove('hidden');
+    } else {
+        image.src = '';
+        imageWrap.classList.add('hidden');
+    }
+
+    card.classList.remove('hidden');
+}
+
     // Set minimum date to today
     const today = new Date().toISOString().split('T')[0];
     document.getElementById('startDate').min = today;
     document.getElementById('endDate').min = today;
 
+    updateCarDetails();
     updateCalendarLink();
     calculateTotal();
 </script>
