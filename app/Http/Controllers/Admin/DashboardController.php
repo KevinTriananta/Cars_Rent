@@ -87,17 +87,14 @@ class DashboardController extends Controller
 
         $reminders = [
             [
-                'icon' => '⚠️',
                 'message' => "{$pending} booking belum diproses",
                 'type' => 'warning',
             ],
             [
-                'icon' => '🚗',
                 'message' => $maintenance > 0 ? "{$maintenance} mobil perlu maintenance" : 'Tidak ada mobil maintenance saat ini',
                 'type' => $maintenance > 0 ? 'danger' : 'info',
             ],
             [
-                'icon' => '⏰',
                 'message' => Booking::where('status', 'approved')->whereDate('end_date', Carbon::today())->count() . ' booking hampir selesai hari ini',
                 'type' => 'success',
             ],

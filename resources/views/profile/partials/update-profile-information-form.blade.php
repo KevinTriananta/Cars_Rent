@@ -9,13 +9,13 @@
 
         <div>
             <x-input-label for="name" :value="__('Nama')" />
-            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
+            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full border-0 border-b-2 border-gray-300 focus:border-blue-500 focus:ring-0 rounded-none bg-transparent" :value="old('name', $user->name)" required autofocus autocomplete="name" />
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
 
         <div>
             <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
+            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full border-0 border-b-2 border-gray-300 focus:border-blue-500 focus:ring-0 rounded-none bg-transparent" :value="old('email', $user->email)" required autocomplete="username" />
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
 
             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
@@ -38,14 +38,14 @@
         </div>
 
         <div class="flex items-center gap-4">
-            <x-primary-button>Simpan</x-primary-button>
+            <x-primary-button x-data x-on:click.prevent="window.CarsRentUI?.confirm({title: 'Simpan perubahan profil?', text: 'Perubahan profil akan disimpan.', confirmLabel: 'Simpan', onConfirm: () => $el.closest('form').submit()})">Simpan</x-primary-button>
 
             @if (session('status') === 'profile-updated')
                 <p
                     x-data="{ show: true }"
                     x-show="show"
                     x-transition
-                    x-init="setTimeout(() => show = false, 2000)"
+                    x-init="window.CarsRentUI?.showToast('Profil berhasil diperbarui', 'success'); setTimeout(() => show = false, 2000)"
                     class="text-sm text-gray-600"
                 >Tersimpan.</p>
             @endif

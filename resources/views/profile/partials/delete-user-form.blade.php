@@ -24,7 +24,7 @@
                     id="password"
                     name="password"
                     type="password"
-                    class="mt-1 block w-3/4"
+                    class="mt-1 block w-3/4 border-0 border-b-2 border-gray-300 focus:border-blue-500 focus:ring-0 rounded-none bg-transparent"
                     placeholder="Password"
                 />
 
@@ -36,7 +36,7 @@
                     Batal
                 </x-secondary-button>
 
-                <x-danger-button class="ms-3">
+                <x-danger-button class="ms-3" x-data x-on:click.prevent="window.CarsRentUI?.confirm({title: 'Hapus akun?', text: 'Akun akan dihapus permanen.', confirmLabel: 'Hapus', onConfirm: () => $el.closest('form').submit()})">
                     Hapus Akun
                 </x-danger-button>
             </div>

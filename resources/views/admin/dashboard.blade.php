@@ -7,44 +7,44 @@
                 <p class="text-2xl sm:text-3xl uppercase tracking-[0.16em] sm:tracking-[0.2em] text-blue-600 font-semibold">Admin Dashboard</p>
                 <p class="mt-2 text-gray-500 max-w-2xl">Pantau pendapatan, booking harian, status mobil, dan reminder penting secara cepat.</p>
             </div>
-            <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                <div class="rounded-3xl bg-gray-50 border border-gray-200 p-4 sm:p-5 text-center shadow-sm">
-                    <p class="text-xs uppercase tracking-[0.2em] text-gray-500">Total Mobil</p>
-                    <p class="mt-3 text-2xl sm:text-3xl font-bold text-gray-900">{{ $cars }}</p>
+            <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
+                <div class="rounded-3xl bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 p-6 text-center shadow-md">
+                    <p class="text-xs uppercase tracking-[0.2em] text-blue-600 font-medium">Total Mobil</p>
+                    <p class="mt-3 text-3xl font-extrabold text-blue-800">{{ $cars }}</p>
                 </div>
-                <div class="rounded-3xl bg-gray-50 border border-gray-200 p-4 text-center shadow-sm">
-                    <p class="text-xs uppercase tracking-[0.2em] text-gray-500">Total Booking</p>
-                    <p class="mt-3 text-2xl sm:text-3xl font-bold text-gray-900">{{ $bookings }}</p>
+                <div class="rounded-3xl bg-gradient-to-br from-green-50 to-green-100 border border-green-200 p-6 text-center shadow-md">
+                    <p class="text-xs uppercase tracking-[0.2em] text-green-600 font-medium">Total Booking</p>
+                    <p class="mt-3 text-3xl font-extrabold text-green-800">{{ $bookings }}</p>
                 </div>
-                <div class="rounded-3xl bg-gray-50 border border-gray-200 p-4 sm:p-8 text-center shadow-sm">
-                    <p class="text-xs uppercase tracking-[0.2em] text-gray-500">Pending</p>
-                    <p class="mt-3 text-2xl sm:text-3xl font-bold text-yellow-600">{{ $pending }}</p>
+                <div class="rounded-3xl bg-gradient-to-br from-yellow-50 to-yellow-100 border border-yellow-200 p-6 text-center shadow-md">
+                    <p class="text-xs uppercase tracking-[0.2em] text-yellow-600 font-medium">Pending</p>
+                    <p class="mt-3 text-3xl font-extrabold text-yellow-800">{{ $pending }}</p>
                 </div>
-                <div class="rounded-3xl bg-gray-50 border border-gray-200 p-4 sm:p-5 text-center shadow-sm">
-                    <p class="text-xs uppercase tracking-[0.2em] text-gray-500">Mobil Disewa</p>
-                    <p class="mt-3 text-2xl sm:text-3xl font-bold text-red-600">{{ $rentedCars }}</p>
+                <div class="rounded-3xl bg-gradient-to-br from-red-50 to-red-100 border border-red-200 p-6 text-center shadow-md">
+                    <p class="text-xs uppercase tracking-[0.2em] text-red-600 font-medium">Booking Aktif</p>
+                    <p class="mt-3 text-3xl font-extrabold text-red-800">{{ $rentedCars }}</p>
                 </div>
             </div>
         </div>
 
         <div class="grid gap-6 lg:grid-cols-3">
-            <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
-                <p class="text-sm font-medium text-gray-500">Pendapatan Hari Ini</p>
-                <p class="mt-4 break-words text-2xl sm:text-3xl font-semibold text-gray-900">Rp {{ number_format($incomeToday, 0, ',', '.') }}</p>
+            <div class="rounded-3xl bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 p-6 shadow-md">
+                <p class="text-sm font-medium text-gray-600">Pendapatan Hari Ini</p>
+                <p class="mt-4 text-3xl font-bold text-gray-900">Rp {{ number_format($incomeToday, 0, ',', '.') }}</p>
             </div>
-            <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
-                <p class="text-sm font-medium text-gray-500">Pendapatan Bulan Ini</p>
-                <p class="mt-4 break-words text-2xl sm:text-3xl font-semibold text-gray-900">Rp {{ number_format($incomeMonth, 0, ',', '.') }}</p>
+            <div class="rounded-3xl bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 p-6 shadow-md">
+                <p class="text-sm font-medium text-gray-600">Pendapatan Bulan Ini</p>
+                <p class="mt-4 text-3xl font-bold text-gray-900">Rp {{ number_format($incomeMonth, 0, ',', '.') }}</p>
             </div>
-            <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
-                <p class="text-sm font-medium text-gray-500">Pendapatan Tahun Ini</p>
-                <p class="mt-4 break-words text-2xl sm:text-3xl font-semibold text-gray-900">Rp {{ number_format($incomeYear, 0, ',', '.') }}</p>
+            <div class="rounded-3xl bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 p-6 shadow-md">
+                <p class="text-sm font-medium text-gray-600">Pendapatan Tahun Ini</p>
+                <p class="mt-4 text-3xl font-bold text-gray-900">Rp {{ number_format($incomeYear, 0, ',', '.') }}</p>
             </div>
         </div>
 
         <div class="grid gap-6 xl:grid-cols-[1.8fr_1fr]">
             <div class="space-y-6">
-                <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
+                <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-md">
                     <div class="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
                         <div>
                             <h2 class="text-lg font-semibold text-gray-900">Booking Hari Ini</h2>
@@ -76,7 +76,7 @@
                     @endif
                 </div>
 
-                <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
+                <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-md">
                     <div class="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
                         <div>
                             <h2 class="text-lg font-semibold text-gray-900">Aktivitas Terbaru</h2>
@@ -101,7 +101,7 @@
             </div>
 
             <div class="space-y-6">
-                <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
+                <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-md">
                     <div class="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
                         <div>
                             <h2 class="text-lg font-semibold text-gray-900">Status Mobil</h2>
@@ -120,7 +120,7 @@
                     </div>
                 </div>
 
-                <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
+                <div class="rounded-3xl border border-gray-200 bg-white p-6 shadow-md">
                     <div class="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
                         <div>
                             <h2 class="text-lg font-semibold text-gray-900">Reminder & Alert</h2>
@@ -130,7 +130,6 @@
                     <div class="mt-6 space-y-4">
                         @foreach($reminders as $reminder)
                             <div class="flex items-start gap-3 rounded-3xl border border-gray-100 bg-gray-50 p-4">
-                                <div class="mt-1 text-xl">{{ $reminder['icon'] }}</div>
                                 <div>
                                     <p class="text-sm text-gray-700">{{ $reminder['message'] }}</p>
                                 </div>
